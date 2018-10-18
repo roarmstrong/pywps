@@ -34,3 +34,18 @@ class MultiProcessing(Processing):
             args=(self.job.wps_request, self.job.wps_response)
         )
         process.start()
+
+
+class MultiThreading(Processing):
+    """
+    :class:`MultiThreading` runs jobs using the :module:`threading` module.
+    It can be considered as an alternative to :class:`MultiProcessing`
+    when running jobs which spend significant time on I/O or which offload
+    processing to another service.
+    """
+    import threading
+    process = threading.Thread(
+        target=getattr(self.job.process, self.job.method),
+        args=(self.job.wps_request, self.job.wps_response)
+        )
+        process.start()

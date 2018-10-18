@@ -4,7 +4,7 @@
 ##################################################################
 
 import pywps.configuration as config
-from pywps.processing.basic import MultiProcessing
+from pywps.processing.basic import MultiProcessing, MultiThreading
 from pywps.processing.scheduler import Scheduler
 # api only
 from pywps.processing.basic import Processing  # noqa: F401
@@ -15,6 +15,7 @@ LOGGER = logging.getLogger("PYWPS")
 
 MULTIPROCESSING = 'multiprocessing'
 SCHEDULER = 'scheduler'
+MULTITHREADING = 'multithreading'
 DEFAULT = MULTIPROCESSING
 
 
@@ -29,6 +30,8 @@ def Process(process, wps_request, wps_response):
     LOGGER.info("Processing mode: %s", mode)
     if mode == SCHEDULER:
         process = Scheduler(process, wps_request, wps_response)
+    elif mode == MULTITHREADING:
+        process = MultiThreading(process, wps_request, wps_response)
     else:
         process = MultiProcessing(process, wps_request, wps_response)
     return process
